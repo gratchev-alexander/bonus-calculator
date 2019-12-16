@@ -1,10 +1,10 @@
-import {combineReducers} from 'redux'
-import NavigationReducer from './NavigationReducer'
+import {
+  combineReducers
+}                          from 'redux'
 import CalculationsReducer from './CalculationsReducer'
 
 const AllReducers = combineReducers({
-  NavigationReducer
-  ,CalculationsReducer
+  CalculationsReducer
 })
 
 export default AllReducers

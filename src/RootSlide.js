@@ -1,48 +1,30 @@
 /*Корневой слайд - переводит на первый слайд с полем ввода*/
 
-import React, {Component} from 'react'
-import {Redirect} from 'react-router-dom'
-import {connect} from 'react-redux'
-import {calculateResult, goToNextSlide} from './Actions'
+import   React
+       ,{
+         Component
+        }                 from 'react'
+import {
+  Redirect
+}                         from 'react-router-dom'
+import {
+  slidePath as salaryPath
+}                         from './SalarySlide'
 
 export const slidePath = '/'
+export const slideName = 'Root'
 
-const mapStateToProps = (state) => {
-  return {
-    redirectPath: state.NavigationReducer.redirectPath
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    goToNextSlide: (currentSlide) => dispatch(goToNextSlide(currentSlide))
-  }
-}
-
-class ConnectedRootSlide extends Component {
+class RootSlide extends Component {
   constructor(props) {
     super(props)
   }
-
-  componentDidMount() {
-    this.props.goToNextSlide({
-      currentSlide: slidePath
-    })
-  }
-
   render() {
-    const {redirectPath} = this.props
-
-    if (redirectPath && redirectPath != slidePath) {
-      return (
-        <Redirect to={redirectPath}/>
-      )
-    } else {
-      return(<div/>)
-    }
+    return(
+      <Redirect
+        to={salaryPath}
+      />
+    )
   }
 }
-
-const RootSlide = connect(mapStateToProps, mapDispatchToProps)(ConnectedRootSlide)
 
 export default RootSlide

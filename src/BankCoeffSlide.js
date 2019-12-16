@@ -1,28 +1,44 @@
 /*Слайд для ввода коэффициента Банка*/
 
-import React, {Component} from 'react'
-import {Redirect, Link} from 'react-router-dom'
-import {connect} from 'react-redux'
-import {setBankCoeff, setBankCoeffDontKnow, goToNextSlide, goToPreviousSlide} from './Actions'
+import   React
+       ,{
+         Component
+        }               from 'react'
+import {
+   Redirect
+  ,Link
+}                       from 'react-router-dom'
+import {
+  connect
+}                       from 'react-redux'
+import {
+   setBankCoeff
+  ,setBankCoeffDontKnow
+}                       from './Actions'
+import {
+   MAX_BANK_COEFF
+  ,INPUT_SIZE
+  ,BANK_PLACEHOLDER
+  ,RIGHT_PARENTHESIS
+  ,TEXT_INPUT_TYPE
+  ,CHECBOX_INPUT_TYPE
+  ,I_DONT_KNOW
+}                       from './Consts'
 
 export const slidePath = '/BankCoeff'
+export const slideName = 'Bank Coeff'
 
 const mapStateToProps = (state) => {
   return {
-    bankCoeff: state.CalculationsReducer.bankCoeff
-    ,userInputBankCoeff: state.CalculationsReducer.userInputBankCoeff
+     userInputBankCoeff    : state.CalculationsReducer.userInputBankCoeff
     ,bankCoeffInputDisabled: state.CalculationsReducer.bankCoeffInputDisabled
-    ,bankCoeffValid: state.CalculationsReducer.bankCoeffValid
-    ,redirectPath: state.NavigationReducer.redirectPath
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    setBankCoeff: (bankCoeff) => dispatch(setBankCoeff(bankCoeff))
-    ,setBankCoeffDontKnow: (dontKnow) => dispatch(setBankCoeffDontKnow(dontKnow))
-    ,goToNextSlide: (currentSlide) => dispatch(goToNextSlide(currentSlide))
-    ,goToPreviousSlide: (currentSlide) => dispatch(goToPreviousSlide(currentSlide))
+     setBankCoeff        : (bankCoeff) => dispatch(setBankCoeff(bankCoeff))
+    ,setBankCoeffDontKnow: (dontKnow)  => dispatch(setBankCoeffDontKnow(dontKnow))
   }
 }
 
@@ -30,10 +46,8 @@ class ConnectedBankCoeffSlide extends Component {
   constructor(props) {
     super(props)
 
-    this.handleChange = this.handleChange.bind(this)
-    this.submit = this.submit.bind(this)
+    this.handleChange   = this.handleChange.bind(this)
     this.handleCheckBox = this.handleCheckBox.bind(this)
-    this.goBack = this.goBack.bind(this)
   }
 
   handleChange = (event) => {
@@ -42,42 +56,38 @@ class ConnectedBankCoeffSlide extends Component {
     })
   }
 
-  submit = () => {
-    this.props.goToNextSlide({
-      currentSlide: slidePath
-    })
-  }
-
   handleCheckBox = (event) => {
     this.props.setBankCoeffDontKnow({
-      checkBoxStatus: event.target.checked
+       checkBoxStatus    : event.target.checked
       ,userInputBankCoeff: this.props.userInputBankCoeff
     })
   }
 
-  goBack = (event) => {
-    this.props.goToPreviousSlide({
-      currentSlide: slidePath
-    })
-  }
-
   render() {
-    const {bankCoeff, userInputBankCoeff, bankCoeffInputDisabled, bankCoeffValid, redirectPath} = this.props
+    const {
+       userInputBankCoeff
+      ,bankCoeffInputDisabled
+    } = this.props
 
-    if (redirectPath && redirectPath != slidePath) {
-      return (
-        <Redirect to={redirectPath}/>
-      )
-    } else {
-      return (
-        <div>
-          <input type='text' name='bankCoeff' placeholder='Input bank coefficient' value={userInputBankCoeff} onChange={this.handleChange} disabled={bankCoeffInputDisabled}/>
-          <input type='button' value='Submit' onClick={this.submit} disabled={!bankCoeffValid}/>
-          <input type='checkbox' checked={bankCoeffInputDisabled} onChange={this.handleCheckBox}/><label>I don't know</label><br/>
-          <input type='button' value='Go back' onClick={this.goBack}/>
-        </div>
-      )
-    }
+    const placeholder = BANK_PLACEHOLDER + MAX_BANK_COEFF + RIGHT_PARENTHESIS
+
+    return (
+      <div>
+        <input
+          type={TEXT_INPUT_TYPE}
+          placeholder={placeholder}
+          value={userInputBankCoeff}
+          onChange={this.handleChange}
+          disabled={bankCoeffInputDisabled}
+          size={INPUT_SIZE}
+        />
+        <input
+          type={CHECBOX_INPUT_TYPE}
+          checked={bankCoeffInputDisabled}
+          onChange={this.handleCheckBox}
+        /><label>{I_DONT_KNOW}</label><br/>
+      </div>
+    )
   }
 }
 
